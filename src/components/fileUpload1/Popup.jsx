@@ -1,0 +1,169 @@
+import React, { useState } from 'react';
+
+function Popup({ onUploadNow }) {
+    const [items, setItems] = useState([]);
+    const [checkedFolders, setCheckedFolders] = useState({});
+
+    // jyare jyare file changes karse to aa function run thase ...
+    const handleFileChange = (event) => {
+        const newFiles = [...event.target.files];
+        // newFiles ma file nu type, file nu name aaa object tarike pass thayu ...
+        setItems((prevItems) => [
+            ...prevItems,
+            ...newFiles.map((file) => ({ type: 'file', name: file.name, path: file.webkitRelativePath || file.name })),
+        ]);
+        console.log(items, "handleFileChange ")
+    };
+
+    const handleFolderChange = (event) => {
+        const newFolders = [...event.target.files];
+        const groupedItems = groupFilesByFolder(newFolders);
+        setItems((prevItems) => [...prevItems, ...groupedItems]);
+        console.log(items, "handleFileChange")
+    };
+
+    // Helper function to group files by folder
+    const groupFilesByFolder = (files) => {
+        const folders = {};
+
+        files.forEach((file) => {
+            const pathParts = file.webkitRelativePath.split('/');
+            const folderPath = pathParts.slice(0, -1).join('/');
+            const fileName = pathParts[pathParts.length - 1];
+
+            if (!folders[folderPath]) {
+                folders[folderPath] = [];
+            }
+
+            folders[folderPath].push({ type: 'file', name: fileName, path: folderPath + '/' + fileName });
+        });
+
+        return Object.keys(folders).map((folderName) => ({
+            type: 'folder',
+            name: folderName,
+            files: folders[folderName],
+        }));
+    };
+
+    // aana thi remove thase jyare jyare remove par click karse to specific remove thase...
+    const handleRemove = (itemPath) => {
+        setItems((prevItems) => {
+
+            return prevItems?.map((item) => {
+                if (item.type === 'folder') {
+
+                    // jo folder hase to je select thay hoy folder tema je file par remove click karyu hase ee aavse..
+                    const updatedFiles = item.files.filter((file) => file.path !== itemPath);
+                    return updatedFiles.length > 0
+                        ? { ...item, files: updatedFiles }
+                        : null; // If folder has no files left, remove the folder
+                }
+                // jo file hase to direct delete thay jhase
+                else {
+                    return item.path !== itemPath ? item : null;
+                }
+
+            }).filter(Boolean);
+        });
+    };
+
+    // jyare jyare check karse to folder's ni files show / hide thase..
+    const handleCheckboxChange = (folderPath) => {
+        setCheckedFolders((prevChecked) => ({
+            ...prevChecked,
+            [folderPath]: !prevChecked[folderPath],
+        }));
+    };
+
+    // aaama file/folder upload thase and te File1.jsx ma jase and eee data props through Table.jsx ma jase...
+    const handleUploadNow = () => {
+        const preparedItems = items.map((item) => {
+            if (item.type === 'folder') {
+                return {
+                    ...item,
+                    files: item.files.filter((file) => checkedFolders[item.name] || false),
+                };
+            }
+            return item;
+        });
+        localStorage.setItem("Files", JSON.stringify(items));
+        onUploadNow(preparedItems);
+
+    };
+
+    return (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50 overflow-auto">
+            <div className="bg-white p-6 rounded-md shadow-lg w-96 overflow-auto">
+                <h2 className="text-2xl mb-4">Upload Files & Folders</h2>
+
+                {/* aa file na input mate che */}
+                <input type="file" multiple onChange={handleFileChange} className="mb-4 p-2 border border-gray-300 rounded-md w-full" />
+
+                {/* aaa folder na input mate che 
+                    webkitdirectory aana thi paren and child and badhi files aavi jay che
+                */}
+                <input type="file" webkitdirectory="true" mozdirectory="true" onChange={handleFolderChange} className="mb-4 p-2 border border-gray-300 rounded-md w-full" />
+
+
+                <div>
+                    <ul className="mb-4">
+                        {/* aaaama files and folder show thase.. */}
+                        {items.map((item, index) => {
+                            if (item.type === 'file') {
+                                return (
+                                    <li key={index} className="flex justify-between items-center mb-2">
+                                        <span>{item.path}</span>
+
+                                        {/* aaama jete path nu array mathi remove thase... */}
+                                        <button onClick={() => handleRemove(item.path)} className="text-red-500 text-xs" > Remove </button>
+                                    </li>
+                                );
+                            }
+
+                            if (item.type === 'folder') {
+                                return (
+                                    <li key={index} className="mb-2">
+                                        <div className="flex items-center">
+                                            <input type="checkbox" checked={checkedFolders[item.name]}
+                                                // jyare jyare checkbox tick and untick kare to aa aav vu joiye ..
+                                                onChange={() => handleCheckboxChange(item.name)}
+                                                className="mr-2" />
+                                            {/* <input type="checkbox" checked={checkedFolders[item.name]}
+                                                // jyare jyare checkbox tick and untick kare to aa aav vu joiye ..
+                                                className="mr-2" /> */}
+                                            <span>{item.name}</span>
+                                        </div>
+
+                                        {/* have je folder ma check hoy teni files ni list show thase... */}
+                                        {checkedFolders[item.name] && (
+                                            <ul className="ml-4">
+                                                {/* same aaama jem file ne karvta hata tem aahi foler ni files mate loop fervi */}
+                                                {item.files.map((file, fileIndex) => (
+                                                    <li key={fileIndex} className="flex justify-between items-center mb-2">
+                                                        <span>{file.path}</span>
+                                                        <button onClick={() => handleRemove(file.path)} className="text-red-500 text-xs" > Remove </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </li>
+                                );
+                            }
+                        })}
+                    </ul>
+                </div>
+
+                <div className="flex justify-between">
+                    <button onClick={handleUploadNow} className="bg-green-500 text-white p-2 rounded-md" >
+                        Upload Now
+                    </button>
+                    <button onClick={() => onUploadNow([])} className="bg-gray-500 text-white p-2 rounded-md" >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Popup;
