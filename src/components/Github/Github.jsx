@@ -36,6 +36,17 @@
 
         add karva(staged ma lai java mate) => git add [file name] / git add .
         commit karva mate => git commit -m "msg" [ msg ne kaik meaning full rakhvo ..]
+
+        have msg aavi jase k ketli files ma changes thayu ne ee badhu pan github ma aapn ne changes show nai thay eena mate aapde 
+
+            git push origin main => etle k local mathi github ma push kari didhu or
+            git push -f origin main kari devu ...
+                git push etle to khbr che k aapde git ne push kari saiye pan origin etle k local mathi global ma send kariye saiye tene 1 name aapi didhu che k origin biju kai pan name rakhi sakiye saiye.. 
+                and main etle k branch che je aaapn ne github ma pan show thay che upar tabs ma..
+
+        mote bhage aapde aapdi jate folder create kari teni andar pelle thi scratch code lakhiye saiye tena mate
+            git init => aana thi have jete folder ma git handle kari sakse ...
+            
 */
 
 
