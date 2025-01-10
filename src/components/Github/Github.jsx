@@ -46,7 +46,8 @@
 
         mote bhage aapde aapdi jate folder create kari teni andar pelle thi scratch code lakhiye saiye tena mate
             git init => aana thi have jete folder ma git handle kari sakse ...
-            
+            s
+            a
 */
 
 
