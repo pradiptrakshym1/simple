@@ -65,6 +65,8 @@
             have aama ghana badha command pan che
                 git checkout <branchName> => etle k 1 branch mathi biji branch ma change karva nu
                 git checkout -b <branchName> => aana thi new branch aapde create kari sakiye saiye...
+
+                This is for not
 */
 
 
