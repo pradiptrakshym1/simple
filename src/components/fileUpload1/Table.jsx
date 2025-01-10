@@ -19,10 +19,10 @@ function Table() {
             if (item.type === 'folder') {
               return (
                 <React.Fragment key={index}>
-                  <tr>
-                    <td className="px-4 py-2">Folder</td>
-                    <td className="px-4 py-2 font-semibold">{item.name}</td>
-                  </tr>
+                    <tr>
+                      <td className="px-4 py-2">Folder</td>
+                      <td className="px-4 py-2 font-semibold">{item.name}</td>
+                    </tr>
                   
                   {item.files.map((file, fileIndex) => (
                     <tr key={fileIndex} className="border-t">
