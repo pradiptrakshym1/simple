@@ -45,9 +45,29 @@
                 and main etle k branch che je aaapn ne github ma pan show thay che upar tabs ma..
 
         mote bhage aapde aapdi jate folder create kari teni andar pelle thi scratch code lakhiye saiye tena mate
+        direct new folder github ma create kari to aapn ne code male j che ene copy paste kari devo ..
             git init => aana thi have jete folder ma git handle kari sakse ...
-            s
-            a
+            git remote add origin <folder link> => aana thi remote ne local sathe access kari sakiye saiye..
+            git remote -v => kaya remote ni vat kari saiye eee ek var verify kari sakiye saiye..
+            git branch => etle k atyare aapde kayi branch par saiye te (etle k feature1 kaik alag kam kare che feature2 kaik alag kam kare to te bey ne alag alag branch banavi devay che jethi pasi merge kari sakiye saiye..)
+            git branch -M "branch_name" => aana thi aapde rename kari sakiye saiye current branch na name ne 
+
+            git push -u origin main => aana thi aapde git ne aki didhu k default push origin main ma j karjo pasi aapde khali git push j lakhva nu and pasu change karvu hoy jyare to khali git push -u f1 feature1 aaa rite karvu ..
+
+
+            branch kaik aa rite pan kahi sakay
+                        C -> D -> --\
+            A -> B -> E -> F -> G -> H
+
+            aaam main branch A B hati pasi aapde kaik change karvu che thoda time mate to C D banavyu pasi main branch jyare aaakhu bani jay ready thay jay to aapde pasu ABEFGH ne merge kari deva nu CD sathe
+
+            etle k badha devloper potpotani copy par kam karva nu start kari dey che pasi main j copy hoy che ema merge kari dey che
+            have aama ghana badha command pan che
+                git checkout <branchName> => etle k 1 branch mathi biji branch ma change karva nu
+                git checkout -b <branchName> => aana thi new branch aapde create kari sakiye saiye...
+
+            
+                aaam aapde main ma je kai changes kariye eee branch1 branch ne kai khbr padti nathi
 */
 
 
